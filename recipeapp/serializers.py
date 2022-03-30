@@ -8,10 +8,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'dinner_guests',
+            'guests_served',
             'ingredients',
             'procedure',
-            'publication_date'
+            'created_date'
         )
 
 
