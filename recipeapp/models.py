@@ -6,15 +6,24 @@ class Profile(models.Model):
     name = models.CharField(blank=True, max_length=120)
     profile_pic = models.ImageField(upload_to='images/', default='default.png')
     bio = models.CharField(max_length=120)
-    
+
     def __str__(self):
          return str(self.user)
-    
+
     def save_profile(self):
         self.save()
 
     def delete_profile(self):
         self.delete()
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+    quantity = models.CharField(max_length=50)
+    unit = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class Recipe(models.Model):
     recipe_name = models.CharField(max_length=120)
@@ -35,13 +44,3 @@ class Recipe(models.Model):
 
     def delete_recipe(self):
         self.delete()
-
-
-class Ingredient(models.Model):
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
-    quantity = models.CharField(max_length=50)
-    unit = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
