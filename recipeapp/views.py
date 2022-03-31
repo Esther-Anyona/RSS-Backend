@@ -46,3 +46,35 @@ def get_recipe(request, pk):
     if request.method == 'GET': 
         recipe_serializer = RecipeSerializer(recipe)
         return Response(recipe_serializer.data)
+
+
+@api_view(['GET'])
+def update_recipe(request, pk):
+    # retrieve single recipe
+    try: 
+        recipe = Recipe.objects.get(pk=pk) 
+    except Recipe.DoesNotExist: 
+        return Response({'message': 'The Recipe does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'PUT': 
+        recipe_data = request.data #research
+        recipe_serializer = RecipeSerializer(recipe, data=recipe_data) 
+        
+        if recipe_serializer.is_valid(): 
+            recipe_serializer.save() 
+            return Response(recipe_serializer.data) 
+        return Response(recipe_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['GET'])
+def delete_recipe(request, pk):
+    # retrieve single recipe
+    try: 
+        recipe = Recipe.objects.get(pk=pk) 
+    except Recipe.DoesNotExist: 
+        return Response({'message': 'The Recipe does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'DELETE': 
+        recipe.delete() 
+        return Response({'message': 'Recipe was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
