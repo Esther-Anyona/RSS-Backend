@@ -17,7 +17,7 @@ class Profile(models.Model):
         self.delete()
 
 class Rating(models.Model):
-    pass
+    rating = models.IntegerField()
 
 class Recipe(models.Model):
     recipe_name = models.CharField(max_length=100)
@@ -28,7 +28,7 @@ class Recipe(models.Model):
     procedure = models.TextField('Instructions')
     guests_served = models.CharField(max_length=50)
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    created_date = models.DateTimeField('Date Created')
+    created_date = models.DateTimeField(auto_now_add=True, blank=True)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
 
     def __str__(self):

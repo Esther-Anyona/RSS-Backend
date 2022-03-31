@@ -49,7 +49,7 @@ def get_recipe(request, pk):
         return Response(recipe_serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['PUT'])
 def update_recipe(request, pk):
     # retrieve single recipe
     try: 
@@ -67,7 +67,7 @@ def update_recipe(request, pk):
         return Response(recipe_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['DELETE'])
 def delete_recipe(request, pk):
     # delete single recipe
     try: 
