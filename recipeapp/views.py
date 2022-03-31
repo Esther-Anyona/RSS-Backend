@@ -35,9 +35,10 @@ def search_recipes(request):
         recipes_serializer = RecipeSerializer(recipes, many=True)
         return Response(recipes_serializer.data, safe=False)
 
+
 @api_view(['GET'])
 def get_recipe(request, pk):
-    # retrieve single recipe
+    # view single recipe
     try: 
         recipe = Recipe.objects.get(pk=pk) 
     except Recipe.DoesNotExist: 
@@ -66,10 +67,9 @@ def update_recipe(request, pk):
         return Response(recipe_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['GET'])
 def delete_recipe(request, pk):
-    # retrieve single recipe
+    # delete single recipe
     try: 
         recipe = Recipe.objects.get(pk=pk) 
     except Recipe.DoesNotExist: 
