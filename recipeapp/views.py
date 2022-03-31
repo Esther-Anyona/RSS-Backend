@@ -34,3 +34,15 @@ def search_recipes(request):
         
         recipes_serializer = RecipeSerializer(recipes, many=True)
         return Response(recipes_serializer.data, safe=False)
+
+@api_view(['GET'])
+def get_recipe(request, pk):
+    # retrieve single recipe
+    try: 
+        recipe = Recipe.objects.get(pk=pk) 
+    except Recipe.DoesNotExist: 
+        return Response({'message': 'The Recipe does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'GET': 
+        recipe_serializer = RecipeSerializer(recipe)
+        return Response(recipe_serializer.data)
