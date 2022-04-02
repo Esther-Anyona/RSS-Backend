@@ -17,6 +17,7 @@ class Profile(models.Model):
         self.delete()
 
 class Rating(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     rating = models.IntegerField()
 
 class Recipe(models.Model):

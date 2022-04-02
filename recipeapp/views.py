@@ -4,22 +4,25 @@ from rest_framework.response import Response
 from .models import Recipe, Rating
 from .serializers import RecipeSerializer, RatingSerializer
 
+
+@api_view(['GET'])
+def index(request):
+    # retrieve all recipes
+    if request.method == 'GET':
+        recipes = Recipe.objects.all()
+        recipes_serializer = RecipeSerializer(recipes, many=True)
+        return Response(recipes_serializer.data)
+
+
 @api_view(['POST'])
 def create_recipe(request):
     # create and save new recipe 
     if request.method == 'POST':
-        recipe = Recipe()
-        recipe.recipe_name = request.data['recipe_name']
-        recipe.ingredient = request.data['ingredient']
-        recipe.category = request.data['category']
-        recipe.recipe_pic = request.data['recipe_pic']
-        recipe.country = request.data['country']
-        recipe.procedure = request.data['procedure']
-        recipe.guests_served = request.data['guests_served']
-        recipe.created_date = request.data['created_date']
-        recipe.save()
-
-        return Response(recipe.data,status=status.HTTP_201_CREATED)
+        serializers = RecipeSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
