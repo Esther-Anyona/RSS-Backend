@@ -17,14 +17,14 @@ class Profile(models.Model):
         self.delete()
 
 class Rating(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-    rating = models.IntegerField()
+    user = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    rating = models.CharField(max_length=5)
 
 class Recipe(models.Model):
     recipe_name = models.CharField(max_length=100)
     ingredient = models.TextField()
     category = models.CharField(max_length=120)
-    recipe_pic = models.ImageField(upload_to="images")
+    recipe_pic = models.ImageField(upload_to="images",blank = True)
     country = models.CharField(max_length=50)
     procedure = models.TextField('Instructions')
     guests_served = models.CharField(max_length=50)
