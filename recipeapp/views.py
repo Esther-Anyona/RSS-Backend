@@ -1,8 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import IsAuthenticated
 from .models import Recipe, Rating
 from .serializers import RecipeSerializer, RatingSerializer
+
 
 
 @api_view(['GET'])
@@ -79,3 +82,26 @@ def delete_recipe(request, pk):
     if request.method == 'DELETE':
         recipe.delete() 
         return Response({'message': 'Recipe was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+class RatingViewSet(viewsets.ModelViewSet):
+    
+    # permission_classes = (IsAuthenticated,)
+    serializer_class = RatingSerializer
+
+    def get_queryset(self):
+        queryset = Rating.objects.all().filter(recipe=self.kwargs['pk'])
+        return queryset
+    
+    # A user can only rate a recipe once
+    def create(self, request, *args, **kwargs):
+        rating = Rating.objects.filter(recipe=self.kwargs['pk']).first()
+        if rating and request.user == rating.rated_by:
+            raise PermissionDenied(
+                "You can not rate recipe more than once")
+        return super().create(request, *args, **kwargs)
+    
+    def perform_create(self, serializer):
+        serializer.save(rated_by=self.request.user)

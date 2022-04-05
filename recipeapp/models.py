@@ -17,18 +17,6 @@ class Profile(models.Model):
     def delete_profile(self):
         self.delete()
 
-class Rating(models.Model):
-    choices = (
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5')
-        )
-    user_rating = models.PositiveBigIntegerField(choices=choices, default=0)
-    status = models.CharField(max_length=10, blank=True)
-
-
 class Recipe(models.Model):
     recipe_name = models.CharField(max_length=100)
     ingredient = models.TextField()
@@ -39,7 +27,7 @@ class Recipe(models.Model):
     guests_served = models.CharField(max_length=50)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True, blank=True)
-    recipe_rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
+    
 
     def __str__(self):
         return self.recipe_name
@@ -49,3 +37,17 @@ class Recipe(models.Model):
 
     def delete_recipe(self):
         self.delete()
+
+
+class Rating(models.Model):
+    choices = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5')
+        )
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    rating = models.PositiveBigIntegerField(choices=choices, default=0)
+    rated_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    rated_date = models.DateTimeField(auto_now_add=True, blank=True)
