@@ -26,14 +26,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'recipeapp',
-    'rest_framework',
-    'corsheaders',
     'bootstrap5',
     'django_registration',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'recipeapp',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # CORS
@@ -45,6 +49,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
 ]
 
 ROOT_URLCONF = 'recipeproject.urls'
