@@ -13,4 +13,3 @@ urlpatterns = [
     path('api/recipes/search', views.search_recipes),
     re_path(r'^api/recipes/update/(?P<pk>[0-9]+)$', views.update_recipe),
     re_path(r'^api/recipes/(?P<pk>[0-9]+)/ratings/$', views.RatingViewSet.as_view({'get': 'list', 'post': 'create'}),name='recipe_ratings'),
-]
