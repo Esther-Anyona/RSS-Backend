@@ -1,6 +1,17 @@
 from pathlib import Path
 from decouple import config, Csv
+import psycopg2
+import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
+# Add cloudinary config
+cloudinary.config( 
+  cloud_name = "starlitacloud", 
+  api_key = "821685236693659", 
+  api_secret = "sJM2PgFDtJDttYfXEHGEBDNDJqo"
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +43,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'recipeapp',
-    'bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -80,9 +90,11 @@ WSGI_APPLICATION = 'recipeproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'recipe',
-        'USER': 'postgres',
-    'PASSWORD':'Njoro',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': '',
     }
 }
 
