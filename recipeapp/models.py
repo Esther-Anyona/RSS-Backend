@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='profile')
     name = models.CharField(blank=True, max_length=120)
     email = models.EmailField(max_length=100, blank=True)
-    profile_pic = models.ImageField(upload_to='images/', default='default.png')
+    profile_pic = CloudinaryField('profile-pic')
     bio = models.CharField(max_length=120)
 
     def __str__(self):
@@ -21,7 +23,7 @@ class Recipe(models.Model):
     recipe_name = models.CharField(max_length=100)
     ingredient = models.TextField()
     category = models.CharField(max_length=120)
-    recipe_pic = models.ImageField(upload_to="images",default='default.png')
+    recipe_pic = CloudinaryField('recipe-pic')
     country = models.CharField(max_length=50)
     procedure = models.TextField('Instructions')
     guests_served = models.CharField(max_length=50)
