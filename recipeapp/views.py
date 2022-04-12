@@ -75,7 +75,7 @@ def update_recipe(request, pk):
 def delete_recipe(request, pk):
     # delete single recipe
     try: 
-        recipe = Recipe.objects.get(pk=pk) 
+        recipe = Recipe.objects.get(pk=pk)
     except Recipe.DoesNotExist: 
         return Response({'message': 'The Recipe does not exist'}, status=status.HTTP_404_NOT_FOUND) 
  
@@ -84,10 +84,7 @@ def delete_recipe(request, pk):
         return Response({'message': 'Recipe was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
 
-
-
 class RatingViewSet(viewsets.ModelViewSet):
-    
     # permission_classes = (IsAuthenticated,)
     serializer_class = RatingSerializer
 
