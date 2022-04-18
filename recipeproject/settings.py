@@ -2,6 +2,9 @@ import django_heroku
 import os
 import dj_database_url
 from decouple import config, Csv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'recipeapp',
     'rest_framework',
     'corsheaders',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -147,6 +151,9 @@ USE_TZ = True
 # # CORS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGIN_REGEXES = [
+r"^https://\w+\.domain\.com$",
+]
 
 # CORS_ORIGIN_WHITELIST = (
 #     'http://localhost:8081',
@@ -169,6 +176,12 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# Add config
+cloudinary.config(
+    cloud_name='johnstat101',
+    api_key = '285282296655837',
+    api_secret = 'yejCWmXo1o2-HVnKok8655Sqg1U',
+)
 
 # REST_FRAMEWORK = {
 #     'DEFAULT_PERMISSION_CLASSES': [
