@@ -6,6 +6,51 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Recipe, Rating
 from .serializers import RecipeSerializer, RatingSerializer
 
+@api_view(['GET', 'PUT', 'DELETE'])
+def recipe_detail(request, pk):
+    # view single recipe
+    try: 
+        recipe = Recipe.objects.get(pk=pk) 
+    except Recipe.DoesNotExist: 
+        return Response({'message': 'The Recipe does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'GET': 
+        recipe_serializer = RecipeSerializer(recipe)
+        return Response(recipe_serializer.data)
+    
+    elif request.method == 'PUT':
+        recipe_serializer = RecipeSerializer(recipe, request.data)
+        if recipe_serializer.is_valid(): 
+            recipe_serializer.save() 
+            return Response(recipe_serializer.data) 
+        return Response(recipe_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        recipe.delete() 
+        return Response({'message': 'Recipe was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+def recipe_list(request):
+    # retrieve all recipes
+    if request.method == 'GET':
+        recipes = Recipe.objects.all()
+        recipes_serializer = RecipeSerializer(recipes, many=True)
+        return Response(recipes_serializer.data)
+    
+    # create and save new recipe 
+    elif request.method == 'POST':
+        recipes_serializer = RecipeSerializer(data=request.data)
+        if recipes_serializer.is_valid():
+            recipes_serializer.save()
+            return Response(recipes_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(recipes_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    elif request.method == 'DELETE':
+        count = Recipe.objects.all().delete()
+        return Response({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+
 
 
 @api_view(['GET'])

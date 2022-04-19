@@ -6,9 +6,11 @@ router = DefaultRouter()
 router.register('ratings', views.RatingViewSet, basename='ratings')
 
 urlpatterns = [
-    path('api/recipes', views.index),
+    path('api/recipes', views.recipe_list),
+    re_path(r'^api/recipes/(?P<pk>[0-9]+)$', views.recipe_detail),
+    # path('api/recipes', views.index),
     path('api/recipes/create', views.create_recipe),
-    re_path(r'^api/recipes/(?P<pk>[0-9]+)$', views.get_recipe),
+    # re_path(r'^api/recipes/(?P<pk>[0-9]+)$', views.get_recipe),
     re_path(r'^api/recipes/(?P<pk>[0-9]+)/delete$', views.delete_recipe),
     path('api/recipes/search', views.search_recipes),
     re_path(r'^api/recipes/(?P<pk>[0-9]+)/update$', views.update_recipe),
